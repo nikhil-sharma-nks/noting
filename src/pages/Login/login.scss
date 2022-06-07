@@ -1,0 +1,36 @@
+.auth-page {
+  background-color: var(--background-color) !important;
+  min-height: calc(100vh - 4rem);
+  min-height: 100vh; // height: fit-content;
+
+  .login-page-container-betterme {
+    transition: var(--default-transition);
+    margin: 0 auto;
+    transform: translateY(4rem);
+    width: fit-content;
+    height: auto;
+    overflow: auto;
+    background-color: var(--background-color) !important;
+    color: var(--text-color);
+    form {
+      transition: var(--default-transition);
+      background-color: var(--background-color);
+      color: var(--text-color);
+      input {
+        background-color: var(--body-background-color);
+        color: var(--text-color);
+      }
+      .form-options-container {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+    button {
+      width: 100%;
+    }
+    a {
+      color: var(--primary-color);
+      cursor: pointer;
+    }
+  }
+}

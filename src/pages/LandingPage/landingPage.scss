@@ -1,0 +1,20 @@
+.landing-page {
+  width: 100%;
+  height: calc(100vh - 4rem);
+  background-color: var(--body-background-color);
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+
+  .landing-flex-item {
+    width: 50%;
+  }
+  .landing-page-text-container {
+    padding-left: 5rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .landing-page-img-container {
+    padding: 2rem;
+  }
+}
