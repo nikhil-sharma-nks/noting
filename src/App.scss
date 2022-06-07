@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+:root {
+  font-family: 'Inter', sans-serif;
+  --font-light: 300;
+  --font-regular: 400;
+  --font-semi-bold: 600;
+  --font-bold: 700;
+  --font-black: 900;
+
+  /* COLORS */
+  --primary-color: #3f37c9;
+  --secondary-color: #00afb9;
+  --success: #4caf50;
+  --error: #f05454;
+  --warning: #ff9f45;
+  --white: #fff;
+  --black: #212529;
+  --bg-grey: #eceae8;
+  --text-grey: #9a9a9a;
+
+  --default-transition: all 0.5s ease-in-out;
+  --grid-template: repeat(1fr, 10);
+  --grid-child-1: 1 / span 1;
+  --grid-child-2: 2 / span 9;
+}
+
+.theme-dark {
+  --background-color: rgba(33, 33, 33, 0.98);
+  --body-background-color: #181818;
+  --text-color: #ffffff;
+  --background-color-secondary: hsl(0, 0%, 37%);
+  --category-pills-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.theme-light {
+  --background-color: #ffffff;
+  --body-background-color: #f1eaea;
+  --text-color: #030303;
+  --background-color-secondary: rgba(0, 0, 0, 0.05);
+  --category-pills-background-color: rgba(0, 0, 0, 0.05);
+}
+
+.main-body {
+  color: var(--text-color);
+  background-color: var(--body-background-color);
+  min-height: calc(100vh - 4rem);
+  transition: var(--default-transition);
+  width: 100%;
+}
+
+.app-body {
+  display: grid;
+  grid-template-columns: var(--grid-template);
+  min-height: calc(100vh - 4rem);
+  width: 100%;
+}
