@@ -19,12 +19,12 @@ const NoteCard = ({ fromEdit }) => {
   const [loading, setLoading] = useState(false);
 
   const colorCode = [
-    '#F7EC09',
-    '#3EC70B',
-    '#A149FA',
-    '#34B3F1',
-    '#FF06B7',
-    '#00FFAB',
+    '#C2DED1',
+    '#6D8B74',
+    '#9A86A4',
+    '#97C4B8',
+    '#D18CE0',
+    '#CDB699',
   ];
 
   const resetEditor = () => {
