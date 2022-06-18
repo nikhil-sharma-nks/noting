@@ -15,22 +15,22 @@ const Sidebar = () => {
     {
       name: 'Labels',
       link: '/labels',
-      icon: <i class='fa-solid fa-tag mr-3'></i>,
+      icon: <i className='fa-solid fa-tag mr-3'></i>,
     },
     {
       name: 'Archive',
       link: '/archive',
-      icon: <i class='fa-solid fa-box-archive mr-3'></i>,
+      icon: <i className='fa-solid fa-box-archive mr-3'></i>,
     },
     {
       name: 'Trash',
       link: '/trash',
-      icon: <i class='fa-solid fa-trash mr-3'></i>,
+      icon: <i className='fa-solid fa-trash mr-3'></i>,
     },
     {
       name: 'Profile',
       link: '/profile',
-      icon: <i class='fa-solid fa-user mr-3'></i>,
+      icon: <i className='fa-solid fa-user mr-3'></i>,
     },
   ];
   return (

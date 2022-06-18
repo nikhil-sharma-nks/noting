@@ -97,7 +97,7 @@ const NoteCardView = ({ note }) => {
               <div className='note-created-at'>Created At: {createdAt}</div>
               <div className='options'>
                 <i
-                  class='fa-solid fa-pen icon-button mr-3'
+                  className='fa-solid fa-pen icon-button mr-3'
                   onClick={handleCardClick}
                 ></i>
                 <i

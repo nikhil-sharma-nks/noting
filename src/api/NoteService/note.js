@@ -11,7 +11,6 @@ const getNotes = async () => {
         },
       })
       .then((response) => {
-        console.log(response);
         const { data } = response;
         return data;
       });

@@ -1,7 +1,5 @@
 const NoteReducer = (state, action) => {
   const { type, payload } = action;
-  console.log({ type });
-
   switch (type) {
     case 'LOAD_NOTES': {
       return {
@@ -11,7 +9,6 @@ const NoteReducer = (state, action) => {
     }
     case 'SET_EDIT_NOTE': {
       const { isModalOpen, editNote } = payload;
-      console.log({ payload });
       return {
         ...state,
         isEditorModalOpen: isModalOpen,
