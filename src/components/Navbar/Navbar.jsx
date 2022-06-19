@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context';
 import './navbar.scss';
-import { useAuth } from '../../context';
+import { useAuth, useNote } from '../../context';
 import { makeToast } from '../../components';
 import NOTING_ICON from '../../assets/noting-icon.png';
 
@@ -10,11 +10,13 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const { authState, authDispatch } = useAuth();
+  const { noteDispatch } = useNote();
   const handleLogout = () => {
     makeToast('You Are Now Logged Out', 'success');
     authDispatch({
       type: 'LOGOUT',
     });
+    noteDispatch({ type: 'LOGOUT' });
     navigate('/');
   };
   return (
