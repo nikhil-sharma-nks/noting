@@ -7,6 +7,18 @@ const NoteReducer = (state, action) => {
         notes: payload,
       };
     }
+    case 'LOAD_ARCHIVE': {
+      return {
+        ...state,
+        archives: payload,
+      };
+    }
+    case 'LOAD_TRASH': {
+      return {
+        ...state,
+        trash: payload,
+      };
+    }
     case 'SET_EDIT_NOTE': {
       const { isModalOpen, editNote } = payload;
       return {
@@ -25,6 +37,17 @@ const NoteReducer = (state, action) => {
     case 'OPEN_NEW_NOTE': {
       return {
         ...state,
+        isNewNoteOpen: true,
+        editorNote: {},
+      };
+    }
+    case 'LOGOUT': {
+      return {
+        notes: [],
+        archives: [],
+        trash: [],
+        searchQuery: '',
+        isEditorModalOpen: false,
         isNewNoteOpen: true,
         editorNote: {},
       };
