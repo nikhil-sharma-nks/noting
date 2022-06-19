@@ -2,15 +2,23 @@ import React, { useState } from 'react';
 import './noteCardView.scss';
 import parse from 'html-react-parser';
 import { Spinner, makeToast } from '../../';
-import { editNote, deleteNote } from '../../../api';
+import {
+  editNote,
+  deleteNote,
+  addToArchive,
+  restoreArchiveNote,
+  updateArchiveNote,
+  deleteArchive,
+} from '../../../api';
 import { useNote } from '../../../context';
 
-const NoteCardView = ({ note }) => {
+const NoteCardView = ({ note, fromArchive }) => {
   const { noteDispatch } = useNote();
   const { title, content, priority, createdAt, color, _id } = note;
   const [showColoPalette, setShowColorPalette] = useState(false);
   const toggleColorPalette = () => setShowColorPalette((s) => !s);
   const [loading, setLoading] = useState(false);
+
   const colorCode = [
     '#C2DED1',
     '#6D8B74',
@@ -30,6 +38,16 @@ const NoteCardView = ({ note }) => {
   const handleDelete = async () => {
     setLoading(true);
     try {
+      if (fromArchive) {
+        const archives = await deleteArchive(_id);
+        if (archives) {
+          makeToast(`Archive Note Deleted Successfully`, 'success');
+          noteDispatch({ type: 'LOAD_ARCHIVE', payload: archives });
+        } else {
+          makeToast('Failed To Delete Archive Note', 'error');
+        }
+        return;
+      }
       const notes = await deleteNote(_id);
       if (notes) {
         makeToast(`Note Deleted Successfully`, 'success');
@@ -59,12 +77,71 @@ const NoteCardView = ({ note }) => {
       updatedNote.priority = payload;
     }
     try {
+      if (fromArchive) {
+        const data = await updateArchiveNote(_id, updatedNote);
+        const { archives } = data;
+        if (archives) {
+          makeToast(`Note Updated Successfully`, 'success');
+          noteDispatch({ type: 'LOAD_ARCHIVE', payload: archives });
+        } else {
+          makeToast('Failed To Add To Archive Note', 'error');
+        }
+        return;
+      }
       const notes = await editNote(_id, updatedNote);
       if (notes) {
         makeToast(`Note ${type.toLowerCase()} Updated`, 'success');
         noteDispatch({ type: 'LOAD_NOTES', payload: notes });
       } else {
         makeToast('Failed To Update Note', 'error');
+      }
+      return;
+    } catch (err) {
+      console.log(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleArchive = async () => {
+    setLoading(true);
+    try {
+      const data = await addToArchive(_id, note);
+      const { notes, archives } = data;
+      if (notes) {
+        noteDispatch({ type: 'LOAD_NOTES', payload: notes });
+      } else {
+        makeToast('Failed To Delete Note', 'error');
+      }
+      if (archives) {
+        makeToast(`Note Archived Successfully`, 'success');
+        noteDispatch({ type: 'LOAD_ARCHIVE', payload: archives });
+      } else {
+        makeToast('Failed To Add To Archive Note', 'error');
+      }
+      return;
+    } catch (err) {
+      console.log(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRestore = async () => {
+    setLoading(true);
+    try {
+      const data = await restoreArchiveNote(_id, note);
+      const { notes, archives } = data;
+      if (notes) {
+        noteDispatch({ type: 'LOAD_NOTES', payload: notes });
+      } else {
+        makeToast('Failed To Restore Note', 'error');
+      }
+      if (archives) {
+        makeToast(`Note Unarchived Successfully`, 'success');
+        noteDispatch({ type: 'LOAD_ARCHIVE', payload: archives });
+      } else {
+        makeToast('Failed To Move From Archive Note', 'error');
       }
       return;
     } catch (err) {
@@ -104,7 +181,17 @@ const NoteCardView = ({ note }) => {
                   onClick={toggleColorPalette}
                 ></i>
                 <i className='fa-solid fa-tag mr-3 icon-button'></i>
-                <i className='fa-solid fa-box-archive mr-3 icon-button'></i>
+                {!fromArchive ? (
+                  <i
+                    className='fa-solid fa-box-archive mr-3 icon-button'
+                    onClick={handleArchive}
+                  ></i>
+                ) : (
+                  <i
+                    class='fa-solid fa-arrow-right-to-bracket mr-3 icon-button'
+                    onClick={handleRestore}
+                  ></i>
+                )}
                 <div className='dropdown'>
                   <i className='fa-solid fa-bolt icon-button mr-3'></i>
                   <div className='dropdown-content'>

@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import './noteCard.scss';
 import { Spinner, makeToast } from '../../';
-import { postNote, editNote, deleteNote } from '../../../api';
+import {
+  postNote,
+  editNote,
+  deleteNote,
+  addToArchive,
+  restoreArchiveNote,
+  updateArchiveNote,
+  deleteArchive,
+} from '../../../api';
 import { useNote } from '../../../context';
+import { useLocation } from 'react-router-dom';
 
 const NoteCard = ({ fromEdit }) => {
+  const location = useLocation();
   const { noteState, noteDispatch } = useNote();
-  const { editorNote, isNewNoteOpen } = noteState;
+  const { editorNote } = noteState;
   const [content, setContent] = useState(editorNote.content || '');
   const [textContent, setTextContent] = useState(editorNote.textContent || '');
   const [title, setTitle] = useState(editorNote.title || '');
@@ -17,6 +27,11 @@ const NoteCard = ({ fromEdit }) => {
   const [priority, setPriority] = useState(editorNote.priority || '');
 
   const [loading, setLoading] = useState(false);
+  const [fromArchive, setFromArchive] = useState(false);
+
+  useEffect(() => {
+    setFromArchive(location.pathname.includes('archive'));
+  }, [location]);
 
   const colorCode = [
     '#C2DED1',
@@ -63,7 +78,7 @@ const NoteCard = ({ fromEdit }) => {
       createdAt: current.toLocaleString(),
     };
     try {
-      if (fromEdit) {
+      if (fromEdit && !fromArchive) {
         const notes = await editNote(editorNote._id, note);
         if (notes) {
           makeToast('Note Editied', 'success');
@@ -71,6 +86,19 @@ const NoteCard = ({ fromEdit }) => {
           handleCancel();
         } else {
           makeToast('Failed To Edit Note', 'error');
+        }
+        return;
+      }
+      if (fromArchive) {
+        const data = await updateArchiveNote(editorNote._id, note);
+        const { archives } = data;
+        if (archives) {
+          makeToast(`Archive Note Updated Successfully`, 'success');
+          noteDispatch({ type: 'LOAD_ARCHIVE', payload: archives });
+          resetEditor();
+          handleCancel();
+        } else {
+          makeToast('Failed To Add To Archive Note', 'error');
         }
         return;
       }
@@ -90,22 +118,32 @@ const NoteCard = ({ fromEdit }) => {
   };
 
   const handleCancel = () => {
-    if (fromEdit) {
+    if (fromEdit || fromArchive) {
       noteDispatch({
         type: 'SET_EDIT_NOTE',
         payload: { isModalOpen: false, editNote: {} },
       });
-    } else {
-      noteDispatch({
-        type: 'CLOSE_NEW_NOTE',
-      });
-      resetEditor();
     }
+    noteDispatch({
+      type: 'CLOSE_NEW_NOTE',
+    });
+    resetEditor();
   };
 
   const handleDelete = async () => {
     setLoading(true);
     try {
+      if (fromArchive) {
+        const archives = await deleteArchive(editorNote._id);
+        if (archives) {
+          makeToast(`Archive Note Deleted Successfully`, 'success');
+          noteDispatch({ type: 'LOAD_ARCHIVE', payload: archives });
+          handleCancel();
+        } else {
+          makeToast('Failed To Delete Archive Note', 'error');
+        }
+        return;
+      }
       const notes = await deleteNote(editorNote._id);
       if (notes) {
         makeToast(`Note Deleted Successfully`, 'success');
@@ -122,134 +160,186 @@ const NoteCard = ({ fromEdit }) => {
     }
   };
 
+  const handleArchive = async () => {
+    setLoading(true);
+    try {
+      const data = await addToArchive(editorNote._id, editorNote);
+      const { notes, archives } = data;
+      if (notes) {
+        noteDispatch({ type: 'LOAD_NOTES', payload: notes });
+      } else {
+        makeToast('Failed To Delete Note', 'error');
+      }
+      if (archives) {
+        makeToast(`Note Archived Successfully`, 'success');
+        noteDispatch({ type: 'LOAD_ARCHIVE', payload: archives });
+      } else {
+        makeToast('Failed To Add To Archive Note', 'error');
+      }
+      return;
+    } catch (err) {
+      console.log(err.message);
+    } finally {
+      setLoading(false);
+      handleCancel();
+    }
+  };
+
+  const handleRestore = async () => {
+    setLoading(true);
+    try {
+      const data = await restoreArchiveNote(editorNote._id, editorNote);
+      const { notes, archives } = data;
+      if (notes) {
+        noteDispatch({ type: 'LOAD_NOTES', payload: notes });
+      } else {
+        makeToast('Failed To Restore Note', 'error');
+      }
+      if (archives) {
+        makeToast(`Note Unarchived Successfully`, 'success');
+        noteDispatch({ type: 'LOAD_ARCHIVE', payload: archives });
+      } else {
+        makeToast('Failed To Move From Archive Note', 'error');
+      }
+      return;
+    } catch (err) {
+      console.log(err.message);
+    } finally {
+      handleCancel();
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       {loading ? (
         <Spinner />
       ) : (
         <>
-          {isNewNoteOpen && (
-            <div
-              className='note-card'
-              style={{ backgroundColor: selectedColor }}
-            >
-              <div className='title-container'>
-                <input
-                  type='text'
-                  className='title-input'
-                  placeholder='Enter Title Here'
-                  style={{ backgroundColor: selectedColor }}
-                  value={title}
-                  onChange={handleTitle}
-                />
-              </div>
-              <div className='text-body-container p-3'>
-                <Editor
-                  apiKey='ycwkesug7hp0pxny33cc65ytjz7wq7veeqeltjx2yzf8ucw3'
-                  // apiKey={process.env.TINY_MCE_KEY}
-                  value={content}
-                  init={{
-                    height: 200,
-                    menubar: false,
+          <div className='note-card' style={{ backgroundColor: selectedColor }}>
+            <div className='title-container'>
+              <input
+                type='text'
+                className='title-input'
+                placeholder='Enter Title Here'
+                style={{ backgroundColor: selectedColor }}
+                value={title}
+                onChange={handleTitle}
+              />
+            </div>
+            <div className='text-body-container p-3'>
+              <Editor
+                apiKey='ycwkesug7hp0pxny33cc65ytjz7wq7veeqeltjx2yzf8ucw3'
+                // apiKey={process.env.TINY_MCE_KEY}
+                value={content}
+                init={{
+                  height: 200,
+                  menubar: false,
 
-                    skin: 'oxide-dark',
-                    content_css: 'dark',
+                  skin: 'oxide-dark',
+                  content_css: 'dark',
 
-                    plugins:
-                      'lists  code emoticons advlist image styleselect advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount',
-                    toolbar:
-                      'undo redo | blocks | bold italic underline| forecolor backcolor | ' +
-                      'alignleft aligncenter alignright alignjustify | ' +
-                      ' numlist bullist lists | emoticons image' +
-                      '| outdent indent | help',
-                    content_style:
-                      'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; line-height:normal }',
-                  }}
-                  onEditorChange={handleChange}
-                />
+                  plugins:
+                    'lists  code emoticons advlist image styleselect advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table help wordcount',
+                  toolbar:
+                    'undo redo | blocks | bold italic underline| forecolor backcolor | ' +
+                    'alignleft aligncenter alignright alignjustify | ' +
+                    ' numlist bullist lists | emoticons image' +
+                    '| outdent indent | help',
+                  content_style:
+                    'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; line-height:normal }',
+                }}
+                onEditorChange={handleChange}
+              />
+            </div>
+            <div className='note-controls-options'>
+              <div className='controls'>
+                <button className='btn btn-primary' onClick={handleSubmit}>
+                  {fromEdit ? 'Edit' : 'Add'}
+                </button>
+                <button
+                  className='btn btn-error-outlined '
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
               </div>
-              <div className='note-controls-options'>
-                <div className='controls'>
-                  <button className='btn btn-primary' onClick={handleSubmit}>
-                    {fromEdit ? 'Edit' : 'Add'}
-                  </button>
-                  <button
-                    className='btn btn-error-outlined '
-                    onClick={handleCancel}
-                  >
-                    Cancel
-                  </button>
-                </div>
-                <div className='options'>
+              <div className='options'>
+                <i
+                  className='fa-solid fa-palette mr-3 icon-button'
+                  onClick={toggleColorPalette}
+                ></i>
+                <i className='fa-solid fa-tag mr-3 icon-button'></i>
+                {fromEdit && !fromArchive && (
                   <i
-                    className='fa-solid fa-palette mr-3 icon-button'
-                    onClick={toggleColorPalette}
+                    className='fa-solid fa-box-archive mr-3 icon-button'
+                    onClick={handleArchive}
                   ></i>
-                  <i className='fa-solid fa-tag mr-3 icon-button'></i>
-                  <i className='fa-solid fa-box-archive mr-3 icon-button'></i>
-                  <div className='dropdown'>
-                    <i className='fa-solid fa-bolt icon-button mr-3'></i>
-                    <div className='dropdown-content'>
-                      <div
-                        className={
-                          priority === 'low' ? 'selected-priority' : ''
-                        }
-                        onClick={() => setPriority('low')}
-                      >
-                        Low Priority
-                      </div>
-                      <div
-                        className={
-                          priority === 'medium' ? 'selected-priority' : ''
-                        }
-                        onClick={() => setPriority('medium')}
-                      >
-                        Medium Priority
-                      </div>
-                      <div
-                        className={
-                          priority === 'high' ? 'selected-priority' : ''
-                        }
-                        onClick={() => setPriority('high')}
-                      >
-                        High Priority
-                      </div>
-                      <div
-                        className={priority === '' ? 'selected-priority' : ''}
-                        onClick={() => setPriority('')}
-                      >
-                        None
-                      </div>
+                )}
+                {fromArchive && (
+                  <i
+                    className='fa-solid fa-arrow-right-to-bracket mr-3 icon-button'
+                    onClick={handleRestore}
+                  ></i>
+                )}
+                <div className='dropdown'>
+                  <i className='fa-solid fa-bolt icon-button mr-3'></i>
+                  <div className='dropdown-content'>
+                    <div
+                      className={priority === 'low' ? 'selected-priority' : ''}
+                      onClick={() => setPriority('low')}
+                    >
+                      Low Priority
+                    </div>
+                    <div
+                      className={
+                        priority === 'medium' ? 'selected-priority' : ''
+                      }
+                      onClick={() => setPriority('medium')}
+                    >
+                      Medium Priority
+                    </div>
+                    <div
+                      className={priority === 'high' ? 'selected-priority' : ''}
+                      onClick={() => setPriority('high')}
+                    >
+                      High Priority
+                    </div>
+                    <div
+                      className={priority === '' ? 'selected-priority' : ''}
+                      onClick={() => setPriority('')}
+                    >
+                      None
                     </div>
                   </div>
-                  {fromEdit && (
-                    <i
-                      className='fa-solid fa-trash mr-3  delete-icon'
-                      onClick={handleDelete}
-                    ></i>
-                  )}
                 </div>
+                {fromEdit && (
+                  <i
+                    className='fa-solid fa-trash mr-3  delete-icon'
+                    onClick={handleDelete}
+                  ></i>
+                )}
               </div>
-              {showColoPalette && (
-                <div className='color-pallete-editor'>
-                  {colorCode.map((color) => (
-                    <div
-                      className='color-element'
-                      style={{ backgroundColor: color }}
-                      onClick={() => handleColorClick(color)}
-                      key={color}
-                    ></div>
-                  ))}
+            </div>
+            {showColoPalette && (
+              <div className='color-pallete-editor'>
+                {colorCode.map((color) => (
                   <div
                     className='color-element'
-                    onClick={() => handleColorClick('')}
-                  >
-                    <i className='fa-solid fa-ban fa-2x'></i>
-                  </div>
+                    style={{ backgroundColor: color }}
+                    onClick={() => handleColorClick(color)}
+                    key={color}
+                  ></div>
+                ))}
+                <div
+                  className='color-element'
+                  onClick={() => handleColorClick('')}
+                >
+                  <i className='fa-solid fa-ban fa-2x'></i>
                 </div>
-              )}
-            </div>
-          )}
+              </div>
+            )}
+          </div>
         </>
       )}
     </>
