@@ -13,19 +13,21 @@ import {
 import { useNote } from '../../../context';
 
 const NoteCardView = ({ note, fromArchive }) => {
-  const { noteDispatch } = useNote();
-  const { title, content, priority, createdAt, color, _id } = note;
+  const { noteState, noteDispatch } = useNote();
+  const { title, content, priority, createdAt, color, _id, tags } = note;
   const [showColoPalette, setShowColorPalette] = useState(false);
   const toggleColorPalette = () => setShowColorPalette((s) => !s);
   const [loading, setLoading] = useState(false);
-
+  const [isLabelOpen, setIsLabelOpen] = useState(false);
+  const [labelInput, setLabelInput] = useState('');
+  const [updatedNoteTags, setUpdatedNoteTags] = useState(tags || []);
   const colorCode = [
-    '#C2DED1',
-    '#6D8B74',
-    '#9A86A4',
-    '#97C4B8',
-    '#D18CE0',
-    '#CDB699',
+    '#FF5959',
+    '#3AB0FF',
+    '#14C38E',
+    '#D4D925',
+    '#EA5C2B',
+    '#A2416B',
   ];
 
   const handleCardClick = () => {
@@ -63,6 +65,37 @@ const NoteCardView = ({ note, fromArchive }) => {
     }
   };
 
+  const checkIfChecked = (label) => {
+    return tags.includes(label);
+  };
+  const handleLabelClick = (label, isChecked) => {
+    if (isChecked) {
+      setUpdatedNoteTags((s) => {
+        handleUpdate('TAG', [...s, label]);
+        return [...s, label];
+      });
+    } else {
+      const newSet = new Set(updatedNoteTags);
+      newSet.delete(label);
+      setUpdatedNoteTags([...newSet]);
+      handleUpdate('TAG', [...newSet]);
+    }
+  };
+
+  const handleNewLabel = () => {
+    if (labelInput === '') {
+      makeToast("Label Name Can't Be Empty", 'info');
+      return;
+    }
+    if (noteState.labels.includes(labelInput)) {
+      makeToast(`${labelInput} Already Exisits`, 'error');
+      return;
+    }
+    noteDispatch({ type: 'ADD_NEW_LABEL', payload: labelInput });
+    setLabelInput('');
+    makeToast('New Label Added', 'success');
+  };
+
   const handleUpdate = async (type, payload) => {
     setLoading(true);
     var current = new Date();
@@ -75,6 +108,8 @@ const NoteCardView = ({ note, fromArchive }) => {
       toggleColorPalette();
     } else if (type === 'PRIORITY') {
       updatedNote.priority = payload;
+    } else if (type === 'TAG') {
+      updatedNote.tags = payload;
     }
     try {
       if (fromArchive) {
@@ -100,8 +135,10 @@ const NoteCardView = ({ note, fromArchive }) => {
       console.log(err.message);
     } finally {
       setLoading(false);
+      setIsLabelOpen(false);
     }
   };
+  const toggleLabel = () => setIsLabelOpen((prev) => !prev);
 
   const handleArchive = async () => {
     setLoading(true);
@@ -180,7 +217,10 @@ const NoteCardView = ({ note, fromArchive }) => {
                   className='fa-solid fa-palette mr-3 icon-button'
                   onClick={toggleColorPalette}
                 ></i>
-                <i className='fa-solid fa-tag mr-3 icon-button'></i>
+                <i
+                  className='fa-solid fa-tag mr-3 icon-button'
+                  onClick={toggleLabel}
+                ></i>
                 {!fromArchive ? (
                   <i
                     className='fa-solid fa-box-archive mr-3 icon-button'
@@ -232,6 +272,42 @@ const NoteCardView = ({ note, fromArchive }) => {
           </>
         )}
       </div>
+      {isLabelOpen && (
+        <div className='label'>
+          <div className='new-label'>
+            <label className='ml-1 mr-2' htmlFor='create-new-label'>
+              Create New Label
+            </label>
+            <input
+              type='text'
+              className='add-to-playlist-input'
+              placeholder='New Label'
+              id='create-new-label'
+              value={labelInput}
+              onChange={(e) => setLabelInput(e.target.value)}
+            />
+            <button
+              class='btn btn-primary-outlined btn-floating ml-2'
+              onClick={handleNewLabel}
+            >
+              <i class='fa-solid fa-plus'></i>
+            </button>
+          </div>
+          <div className='label-container'>
+            {noteState.labels?.map((label) => (
+              <div className='input-container'>
+                <input
+                  type='checkbox'
+                  name={label}
+                  checked={checkIfChecked(label)}
+                  onChange={(e) => handleLabelClick(label, e.target.checked)}
+                />
+                <label className='ml-1'>{label}</label>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       {showColoPalette && (
         <div className='color-pallete'>
           {colorCode.map((color) => (
