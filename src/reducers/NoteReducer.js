@@ -41,6 +41,18 @@ const NoteReducer = (state, action) => {
         editorNote: {},
       };
     }
+    case 'LOAD_LABELS': {
+      return {
+        ...state,
+        labels: payload,
+      };
+    }
+    case 'ADD_NEW_LABEL': {
+      return {
+        ...state,
+        labels: [...state.labels, payload],
+      };
+    }
     case 'LOGOUT': {
       return {
         notes: [],
@@ -50,6 +62,7 @@ const NoteReducer = (state, action) => {
         isEditorModalOpen: false,
         isNewNoteOpen: true,
         editorNote: {},
+        labels: [],
       };
     }
     default:

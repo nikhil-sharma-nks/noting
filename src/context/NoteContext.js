@@ -14,6 +14,7 @@ const NoteProvider = ({ children }) => {
     isEditorModalOpen: false,
     isNewNoteOpen: true,
     editorNote: {},
+    labels: [],
   });
   return (
     <NoteContext.Provider value={{ noteState, noteDispatch }}>
