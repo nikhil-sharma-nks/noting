@@ -205,6 +205,11 @@ const NoteCardView = ({ note, fromArchive }) => {
                       priority?.charAt(0).toUpperCase() + priority?.slice(1)
                     }`}
               </div>
+              {tags.map((tag) => (
+                <div className={`label-chip ml-1`} key={tag}>
+                  {tag}
+                </div>
+              ))}
             </div>
             <div className='note-footer mt-2'>
               <div className='note-created-at'>Created At: {createdAt}</div>

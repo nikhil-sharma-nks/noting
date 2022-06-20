@@ -377,7 +377,7 @@ const NoteCard = ({ fromEdit }) => {
               </div>
             )}
             {isLabelOpen && (
-              <div className='label'>
+              <div className='label-editor-note'>
                 <div className='new-label'>
                   <label className='ml-1 mr-2' htmlFor='create-new-label'>
                     Create New Label
@@ -391,15 +391,15 @@ const NoteCard = ({ fromEdit }) => {
                     onChange={(e) => setLabelInput(e.target.value)}
                   />
                   <button
-                    class='btn btn-primary-outlined btn-floating ml-2'
+                    className='btn btn-primary-outlined btn-floating ml-2'
                     onClick={handleNewLabel}
                   >
-                    <i class='fa-solid fa-plus'></i>
+                    <i className='fa-solid fa-plus'></i>
                   </button>
                 </div>
                 <div className='label-container'>
                   {noteState.labels?.map((label) => (
-                    <div className='input-container'>
+                    <div className='input-container' index={label}>
                       <input
                         type='checkbox'
                         name={label}
