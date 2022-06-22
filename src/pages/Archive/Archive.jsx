@@ -56,7 +56,7 @@ const Archive = () => {
         <NotesContainer>
           {isNewNoteOpen && <NoteCard />}
           {notesToDisplay?.map((note) => (
-            <NoteCardView key={note._id} note={note} />
+            <NoteCardView key={note._id} note={note} fromArchive />
           ))}
           {noteState.archives.length === 0 && (
             <p className='text-centered text-xl mt-4'>No Archive Notes</p>
