@@ -12,11 +12,11 @@ const Sidebar = () => {
       link: '/home',
       icon: <i className='fa-solid fa-house mr-3'></i>,
     },
-    {
-      name: 'Labels',
-      link: '/labels',
-      icon: <i className='fa-solid fa-tag mr-3'></i>,
-    },
+    // {
+    //   name: 'Labels',
+    //   link: '/home',
+    //   icon: <i className='fa-solid fa-tag mr-3'></i>,
+    // },
     {
       name: 'Archive',
       link: '/archive',
@@ -29,7 +29,7 @@ const Sidebar = () => {
     },
     {
       name: 'Profile',
-      link: '/profile',
+      link: '/',
       icon: <i className='fa-solid fa-user mr-3'></i>,
     },
   ];
