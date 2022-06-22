@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './home.scss';
 import {
   Layout,
@@ -8,29 +8,58 @@ import {
   NoteCard,
 } from '../../components';
 import { useNote } from '../../context';
+import {
+  filterBySearch,
+  sortByDate,
+  sortByPriority,
+  filterByTags,
+} from '../../utils';
 
 const Home = () => {
   const { noteState, noteDispatch } = useNote();
-  const { isEditorModalOpen, isNewNoteOpen } = noteState;
+  const {
+    isEditorModalOpen,
+    isNewNoteOpen,
+    filter,
+    notes,
+    labels,
+    searchQuery,
+  } = noteState;
+  const [notesToDisplay, setNotesToDisplay] = useState(notes || []);
 
   useEffect(() => {
     if (!noteState.isNewNoteOpen) {
       noteDispatch({ type: 'OPEN_NEW_NOTE' });
     }
   }, []);
+
+  useEffect(() => {
+    const notesFilterBySearch = filterBySearch(searchQuery, notes);
+    const notesSortByDate = sortByDate(
+      filter.sortBy?.value || '',
+      notesFilterBySearch
+    );
+    const notesSortByPriority = sortByPriority(
+      filter.filterPriority?.value || '',
+      notesSortByDate
+    );
+    const notesFilterByTags = filterByTags(
+      filter.filterTags || [],
+      notesSortByPriority
+    );
+    setNotesToDisplay([...notesFilterByTags]);
+  }, [filter, notes, labels, searchQuery]);
   return (
     <>
       <Layout>
         {isEditorModalOpen && <EditNote />}
         <NotesContainer>
           {isNewNoteOpen && <NoteCard />}
-          {noteState.notes?.map((note) => (
+          {notesToDisplay?.map((note) => (
             <NoteCardView key={note._id} note={note} />
           ))}
-          {noteState.notes.length === 0 && (
-            <p className='text-centered text-xl mt-4'>
-              No Notes Here, Please Add One!
-            </p>
+          {notesToDisplay.length === 0 && (
+            <p className='text-centered text-xl mt-4'>No Notes Found</p>
           )}
         </NotesContainer>
       </Layout>
