@@ -70,15 +70,12 @@ const deleteArchive = async (noteId) => {
   const token = localStorage.getItem('token');
   const deleteArchiveBaseUrl = `/api/archives/delete/${noteId}`;
   try {
-    const {
-      data: { archives },
-      status,
-    } = await axios.delete(deleteArchiveBaseUrl, {
+    const { data, status } = await axios.delete(deleteArchiveBaseUrl, {
       headers: {
         authorization: token,
       },
     });
-    if (status >= 200 && status <= 300) return archives;
+    if (status >= 200 && status <= 300) return data;
     else {
       throw new Error('Could not get archives');
     }
