@@ -101,7 +101,7 @@ const Navbar = () => {
         <div className='menu-sidebar'>
           <ul className='sidebar-link-container'>
             {sidebarLinks.map((item) => (
-              <li key={item.name}>
+              <li key={item.name} onClick={() => setIsMenuOpen(false)}>
                 <NavLink
                   to={item.link}
                   className={({ isActive }) =>
@@ -116,6 +116,12 @@ const Navbar = () => {
             <li className='link-item' onClick={handleAuth}>
               <i className='fa-solid fa-arrow-right-from-bracket mr-3'></i>
               {authState.isAuth ? 'Logout' : 'Login'}
+            </li>
+            <li
+              className='link-item close-menu'
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <i className='fa-solid fa-circle-xmark mr-3'></i>Close
             </li>
           </ul>
         </div>
