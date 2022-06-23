@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './signup.scss';
 import { signupUser } from '../../api';
@@ -21,6 +21,12 @@ const Signup = () => {
       [name]: value,
     });
   };
+  useEffect(() => {
+    const isAuth = JSON.parse(localStorage.getItem('isAuth'));
+    if (isAuth) {
+      navigate('/home');
+    }
+  }, []);
   const handleSignupSubmit = async (event) => {
     event.preventDefault();
     if (signupInput.password !== signupInput.confirmPassword) {

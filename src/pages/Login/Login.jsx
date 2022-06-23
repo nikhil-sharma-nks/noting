@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './login.scss';
 import { loginUser } from '../../api';
@@ -19,6 +19,12 @@ const Login = () => {
     email: 'nikhil.harsh.sharma@gmail.com',
     password: 'nikhil123',
   };
+  useEffect(() => {
+    const isAuth = JSON.parse(localStorage.getItem('isAuth'));
+    if (isAuth) {
+      navigate('/home');
+    }
+  }, []);
 
   const loginHandler = async (event, loginInput) => {
     event.preventDefault();
