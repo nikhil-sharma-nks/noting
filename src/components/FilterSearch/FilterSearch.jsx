@@ -50,6 +50,8 @@ const FilterSearch = () => {
     });
   };
 
+  const handleAddNewNote = () => noteDispatch({ type: 'OPEN_NEW_NOTE' });
+
   const handleClear = () => {
     noteDispatch({ type: 'CLEAR_FILTER' });
     setSelectedTags([]);
@@ -64,7 +66,16 @@ const FilterSearch = () => {
       fontSize: state.selectProps.myFontSize,
     }),
   };
-  const toggleFilterModal = () => setIsFilterModalOpen((prev) => !prev);
+  const toggleFilterModal = () => {
+    setIsFilterModalOpen((prev) => {
+      if (!prev) {
+        noteDispatch({
+          type: 'CLOSE_NEW_NOTE',
+        });
+      }
+      return !prev;
+    });
+  };
   return (
     <>
       <div className='search-filter-container'>
@@ -73,7 +84,7 @@ const FilterSearch = () => {
           <input
             type='text'
             className='form-control'
-            placeholder='Search Products Here'
+            placeholder='Search Notes Here'
             value={searchQuery}
             onChange={handleInputChange}
           />
@@ -90,65 +101,75 @@ const FilterSearch = () => {
             className='fa-solid fa-filter filter-btn'
             onClick={toggleFilterModal}
           ></i>
-        </div>
-        {isFilterModalOpen && (
-          <div className='filter-container'>
-            <div className='filter-header'>
-              <p className='text-l'>Filters</p>
-              <i
-                className='fa-solid fa-xmark search-cancel'
-                onClick={() => setIsFilterModalOpen(false)}
-              ></i>
-            </div>
-            <div className='select-container'>
-              <p>Sort By Date : </p>
-              <Select
-                onChange={handleDateFilterChange}
-                options={DateFitlerOptions}
-                styles={styles}
-                value={noteState.filter.sortBy}
-                placeholder='Date'
-                className='select-box'
-                isClearable
-              />
-            </div>
-            <div className='select-container'>
-              <p>Sort By Priority : </p>
-              <Select
-                onChange={handlePriorityFilterChange}
-                options={PriorityFilterOptions}
-                styles={styles}
-                value={noteState.filter.filterPriority}
-                placeholder='Priority'
-                className='select-box'
-                isClearable
-              />
-            </div>
-            <div className='tags-container'>
-              <p>Filter By Tags</p>
-              <div className='tags mt-2'>
-                {noteState.labels?.map((label) => (
-                  <div className='input-container' key={label}>
-                    <input
-                      type='checkbox'
-                      name={label}
-                      checked={checkIfChecked(label)}
-                      onChange={(e) =>
-                        handleLabelClick(label, e.target.checked)
-                      }
-                    />
-                    <label className='ml-1'>{label}</label>
+          <div className='add-note-btn' onClick={handleAddNewNote}>
+            <i className='fas fa-plus '></i>
+          </div>
+          {isFilterModalOpen && (
+            <div className='filter-container'>
+              <div className='filter'>
+                <div className='filter-header'>
+                  <p className='text-l'>Filters</p>
+                  <i
+                    className='fa-solid fa-xmark search-cancel'
+                    onClick={() => {
+                      setIsFilterModalOpen(false);
+                    }}
+                  ></i>
+                </div>
+                <div className='select-container'>
+                  <p>Sort By Date : </p>
+                  <Select
+                    onChange={handleDateFilterChange}
+                    options={DateFitlerOptions}
+                    styles={styles}
+                    value={noteState.filter.sortBy}
+                    placeholder='Date'
+                    className='select-box'
+                    isClearable
+                  />
+                </div>
+                <div className='select-container'>
+                  <p>Sort By Priority : </p>
+                  <Select
+                    onChange={handlePriorityFilterChange}
+                    options={PriorityFilterOptions}
+                    styles={styles}
+                    value={noteState.filter.filterPriority}
+                    placeholder='Priority'
+                    className='select-box'
+                    isClearable
+                  />
+                </div>
+                <div className='tags-container'>
+                  <p>Filter By Tags</p>
+                  <div className='tags mt-2'>
+                    {noteState.labels?.map((label) => (
+                      <div className='input-container' key={label}>
+                        <input
+                          type='checkbox'
+                          name={label}
+                          checked={checkIfChecked(label)}
+                          onChange={(e) =>
+                            handleLabelClick(label, e.target.checked)
+                          }
+                        />
+                        <label className='ml-1'>{label}</label>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+                <div>
+                  <button
+                    className='btn btn-error-outlined'
+                    onClick={handleClear}
+                  >
+                    Clear
+                  </button>
+                </div>
               </div>
             </div>
-            <div>
-              <button className='btn btn-error-outlined' onClick={handleClear}>
-                Clear
-              </button>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   );

@@ -34,3 +34,26 @@
     }
   }
 }
+@media (max-width: 700px) {
+  .auth-page {
+    background-color: var(--background-color) !important;
+    min-height: calc(100vh - 4rem);
+
+    .login-page-container-betterme {
+      width: 100%;
+      height: auto;
+      overflow: auto;
+      background-color: var(--background-color) !important;
+      color: var(--text-color);
+      form {
+        .form-control {
+          width: 100%;
+        }
+        width: 100%;
+        input[type='text'] {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
