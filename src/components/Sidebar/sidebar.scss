@@ -4,7 +4,7 @@
   position: sticky;
   top: 4rem;
   background-color: var(--background-color);
-  transition: var(--default-transition);
+
   width: 70%;
   margin-left: auto;
   display: flex;
@@ -21,7 +21,6 @@
       color: var(--text-color);
       font-size: larger;
       font-weight: var(--font-light);
-      transition: var(--default-transition);
     }
     :hover {
       cursor: pointer;
