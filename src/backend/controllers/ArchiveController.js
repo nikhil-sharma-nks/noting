@@ -1,5 +1,5 @@
-import { Response } from "miragejs";
-import { requiresAuth } from "../utils/authUtils";
+import { Response } from 'miragejs';
+import { requiresAuth } from '../utils/authUtils';
 
 /**
  * All the routes related to Archives are present here.
@@ -18,7 +18,7 @@ export const getAllArchivedNotesHandler = function (schema, request) {
       404,
       {},
       {
-        errors: ["The email you entered is not Registered. Not Found error"],
+        errors: ['The email you entered is not Registered. Not Found error'],
       }
     );
   }
@@ -37,14 +37,16 @@ export const deleteFromArchivesHandler = function (schema, request) {
       404,
       {},
       {
-        errors: ["The email you entered is not Registered. Not Found error"],
+        errors: ['The email you entered is not Registered. Not Found error'],
       }
     );
   }
   const { noteId } = request.params;
+  const noteToBeDeleted = user.archives.find((note) => note._id === noteId);
+  user.trash.push({ ...noteToBeDeleted });
   user.archives = user.archives.filter((note) => note._id !== noteId);
   this.db.users.update({ _id: user._id }, user);
-  return new Response(200, {}, { archives: user.archives });
+  return new Response(200, {}, { archives: user.archives, trash: user.trash });
 };
 
 /**
@@ -59,7 +61,7 @@ export const restoreFromArchivesHandler = function (schema, request) {
       404,
       {},
       {
-        errors: ["The email you entered is not Registered. Not Found error"],
+        errors: ['The email you entered is not Registered. Not Found error'],
       }
     );
   }
@@ -69,4 +71,38 @@ export const restoreFromArchivesHandler = function (schema, request) {
   user.notes.push({ ...restoredNote });
   this.db.users.update({ _id: user._id }, user);
   return new Response(200, {}, { archives: user.archives, notes: user.notes });
+};
+
+export const updateArchiveNoteHandler = function (schema, request) {
+  const user = requiresAuth.call(this, request);
+  try {
+    if (!user) {
+      return new Response(
+        404,
+        {},
+        {
+          errors: ['The email you entered is not Registered. Not Found error'],
+        }
+      );
+    }
+    const { noteId } = request.params;
+    const { archiveNote } = JSON.parse(request.requestBody);
+    const archiveNoteIndex = user.archives.findIndex(
+      (archiveNote) => archiveNote._id === noteId
+    );
+    user.archives[archiveNoteIndex] = {
+      ...user.archives[archiveNoteIndex],
+      ...archiveNote,
+    };
+    this.db.users.update({ _id: user._id }, user);
+    return new Response(200, {}, { archives: user.archives });
+  } catch (error) {
+    return new Response(
+      500,
+      {},
+      {
+        error,
+      }
+    );
+  }
 };

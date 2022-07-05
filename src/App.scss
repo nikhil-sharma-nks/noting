@@ -19,9 +19,9 @@
   --text-grey: #9a9a9a;
 
   --default-transition: all 0.5s ease-in-out;
-  --grid-template: repeat(1fr, 10);
-  --grid-child-1: 1 / span 1;
-  --grid-child-2: 2 / span 9;
+  --grid-template: repeat(12, 1fr);
+  --grid-child-1: 1 / span 3;
+  --grid-child-2: 4 / span 9;
 }
 
 .theme-dark {
