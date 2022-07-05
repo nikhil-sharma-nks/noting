@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import './home.scss';
+import './archive.scss';
 import {
   Layout,
   NoteCardView,
-  EditNote,
   NotesContainer,
+  EditNote,
   NoteCard,
 } from '../../components';
 import { useNote } from '../../context';
@@ -15,7 +15,7 @@ import {
   filterByTags,
 } from '../../utils';
 
-const Home = () => {
+const Archive = () => {
   const { noteState, noteDispatch } = useNote();
   const {
     isEditorModalOpen,
@@ -24,17 +24,17 @@ const Home = () => {
     notes,
     labels,
     searchQuery,
+    archives,
   } = noteState;
-  const [notesToDisplay, setNotesToDisplay] = useState(notes || []);
+  const [notesToDisplay, setNotesToDisplay] = useState(archives || []);
 
   useEffect(() => {
-    if (!noteState.isNewNoteOpen) {
-      noteDispatch({ type: 'OPEN_NEW_NOTE' });
+    if (noteState.isNewNoteOpen) {
+      noteDispatch({ type: 'CLOSE_NEW_NOTE' });
     }
   }, []);
-
   useEffect(() => {
-    const notesFilterBySearch = filterBySearch(searchQuery, notes);
+    const notesFilterBySearch = filterBySearch(searchQuery, archives);
     const notesSortByDate = sortByDate(
       filter.sortBy?.value || '',
       notesFilterBySearch
@@ -48,18 +48,18 @@ const Home = () => {
       notesSortByPriority
     );
     setNotesToDisplay([...notesFilterByTags]);
-  }, [filter, notes, labels, searchQuery]);
+  }, [filter, archives, labels, searchQuery]);
   return (
     <>
       <Layout>
-        {isEditorModalOpen && <EditNote />}
+        {isEditorModalOpen && <EditNote fromArchive />}
         <NotesContainer>
           {isNewNoteOpen && <NoteCard />}
           {notesToDisplay?.map((note) => (
-            <NoteCardView key={note._id} note={note} />
+            <NoteCardView key={note._id} note={note} fromArchive />
           ))}
-          {notesToDisplay.length === 0 && (
-            <p className='text-centered text-xl mt-4'>No Notes Found</p>
+          {noteState.archives.length === 0 && (
+            <p className='text-centered text-xl mt-4'>No Archive Notes</p>
           )}
         </NotesContainer>
       </Layout>
@@ -67,4 +67,4 @@ const Home = () => {
   );
 };
 
-export { Home };
+export { Archive };

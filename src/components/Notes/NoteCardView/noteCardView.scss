@@ -88,7 +88,32 @@
     }
   }
 }
-
+.label {
+  width: 80%;
+  margin: 0 auto;
+  padding: 1rem;
+  .new-label {
+    #create-new-label {
+      padding: 5px 10px;
+      outline: none;
+      border: none;
+    }
+    .btn-floating {
+      i {
+        margin-top: 2px;
+      }
+      padding: 3px;
+    }
+  }
+  .label-container {
+    display: flex;
+    flex-wrap: wrap;
+    .input-container {
+      margin: 10px 0;
+      width: 30%;
+    }
+  }
+}
 .color-pallete {
   padding: 10px;
   display: flex;
@@ -105,5 +130,70 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
+  }
+}
+
+@media (max-width: 700px) {
+  .note-card-view {
+    .note-footer {
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      .options {
+        margin-top: 1rem;
+        display: flex;
+        .dropdown {
+          display: inline-block;
+          position: relative;
+          .dropdown-content {
+            display: none;
+            position: absolute;
+            left: -2rem;
+            width: 9rem;
+          }
+        }
+      }
+    }
+  }
+
+  .color-pallete {
+    margin: 0 auto;
+    width: 80%;
+    padding: 10px;
+    display: flex;
+    position: unset;
+    left: unset;
+    gap: 10px;
+    justify-content: center;
+    align-self: flex-end;
+    background-color: var(--body-background-color);
+  }
+  .label {
+    padding: 1rem;
+    .new-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      #create-new-label {
+        padding: 5px 10px;
+        outline: none;
+        border: none;
+        width: 70%;
+      }
+      .btn-floating {
+        i {
+          margin-top: 2px;
+        }
+        padding: 3px;
+      }
+    }
+    .label-container {
+      display: flex;
+      flex-wrap: wrap;
+      .input-container {
+        margin: 10px 0;
+        width: 50%;
+      }
+    }
   }
 }

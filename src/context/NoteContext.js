@@ -1,4 +1,4 @@
-import { useContext, createContext, useEffect, useReducer } from 'react';
+import { useContext, createContext, useReducer } from 'react';
 import { NoteReducer } from '../reducers';
 
 const NoteContext = createContext();
@@ -8,12 +8,18 @@ const useNote = () => useContext(NoteContext);
 const NoteProvider = ({ children }) => {
   const [noteState, noteDispatch] = useReducer(NoteReducer, {
     notes: [],
-    archive: [],
+    archives: [],
     trash: [],
     searchQuery: '',
     isEditorModalOpen: false,
     isNewNoteOpen: true,
     editorNote: {},
+    labels: [],
+    filter: {
+      sortBy: '',
+      filterTags: [],
+      filterPriority: '',
+    },
   });
   return (
     <NoteContext.Provider value={{ noteState, noteDispatch }}>
