@@ -1,0 +1,32 @@
+.signup-page-container {
+  width: fit-content;
+  margin: 0 auto;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  form {
+    transition: var(--default-transition);
+    background-color: var(--background-color);
+    input {
+      background-color: var(--body-background-color);
+      color: var(--text-color);
+    }
+  }
+  button {
+    width: 100%;
+  }
+  a {
+    color: var(--primary-color);
+    cursor: pointer;
+  }
+}
+
+@media (max-width: 700px) {
+  .signup-page-container {
+    width: 100%;
+    form {
+      .form-control {
+        width: 100%;
+      }
+    }
+  }
+}

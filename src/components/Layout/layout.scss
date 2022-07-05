@@ -1,0 +1,25 @@
+.app-layout {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  min-height: calc(100vh - 4rem);
+  display: grid;
+  grid-template-columns: var(--grid-template);
+  .notes-container {
+    grid-column: var(--grid-child-2);
+    margin-top: 2rem;
+    width: 70%;
+    margin: 2rem auto;
+  }
+}
+
+@media (max-width: 700px) {
+  .app-layout {
+    display: block;
+    width: 100%;
+    .notes-container {
+      width: 100%;
+      margin: 0 auto;
+      padding-top: 2rem;
+    }
+  }
+}

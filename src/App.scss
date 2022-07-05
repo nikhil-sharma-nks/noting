@@ -19,14 +19,14 @@
   --text-grey: #9a9a9a;
 
   --default-transition: all 0.5s ease-in-out;
-  --grid-template: repeat(1fr, 10);
-  --grid-child-1: 1 / span 1;
-  --grid-child-2: 2 / span 9;
+  --grid-template: repeat(12, 1fr);
+  --grid-child-1: 1 / span 3;
+  --grid-child-2: 4 / span 9;
 }
 
 .theme-dark {
-  --background-color: rgba(33, 33, 33, 0.98);
-  --body-background-color: #181818;
+  --background-color: #1a202c;
+  --body-background-color: #262d3a;
   --text-color: #ffffff;
   --background-color-secondary: hsl(0, 0%, 37%);
   --category-pills-background-color: rgba(255, 255, 255, 0.1);
@@ -53,4 +53,26 @@
   grid-template-columns: var(--grid-template);
   min-height: calc(100vh - 4rem);
   width: 100%;
+}
+
+.color-primary {
+  color: var(--primary-color);
+}
+.color-secondary {
+  color: var(--secondary-color);
+}
+.color-white {
+  color: var(--white);
+}
+.color-black {
+  color: var(--black);
+}
+.color-error {
+  color: var(--error);
+}
+.color-success {
+  color: var(--success);
+}
+.color-warning {
+  color: var(--warning);
 }

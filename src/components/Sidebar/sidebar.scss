@@ -1,0 +1,40 @@
+.sidebar {
+  grid-column: var(--grid-child-1);
+  height: calc(100vh - 4rem);
+  position: sticky;
+  top: 4rem;
+  background-color: var(--background-color);
+
+  width: 70%;
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  .sidebar-link-container {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .link-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem 2rem;
+      color: var(--text-color);
+      font-size: larger;
+      font-weight: var(--font-light);
+    }
+    :hover {
+      cursor: pointer;
+      background-color: var(--background-color-secondary);
+    }
+    .link-isActive {
+      cursor: pointer;
+      background-color: var(--background-color-secondary);
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .sidebar {
+    display: none;
+  }
+}
