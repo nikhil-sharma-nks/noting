@@ -1,5 +1,5 @@
-import { Response } from "miragejs";
-import { requiresAuth } from "../utils/authUtils";
+import { Response } from 'miragejs';
+import { requiresAuth } from '../utils/authUtils';
 
 /**
  * All the routes related to Trash are present here.
@@ -18,7 +18,7 @@ export const getAllTrashNotesHandler = function (schema, request) {
       404,
       {},
       {
-        errors: ["The email you entered is not Registered. Not Found error"],
+        errors: ['The email you entered is not Registered. Not Found error'],
       }
     );
   }
@@ -37,7 +37,7 @@ export const deleteFromTrashHandler = function (schema, request) {
       404,
       {},
       {
-        errors: ["The email you entered is not Registered. Not Found error"],
+        errors: ['The email you entered is not Registered. Not Found error'],
       }
     );
   }
@@ -54,19 +54,37 @@ export const deleteFromTrashHandler = function (schema, request) {
 
 export const restoreFromTrashHandler = function (schema, request) {
   const user = requiresAuth.call(this, request);
-  if (!user) {
-    new Response(
-      404,
+  try {
+    if (!user) {
+      return new Response(
+        404,
+        {},
+        {
+          errors: ['The email you entered is not Registered. Not Found error'],
+        }
+      );
+    }
+    const { noteId } = request.params;
+    const noteTobeRestored = user.trash.find((note) => note._id === noteId);
+    if (noteTobeRestored.isArchive) {
+      user.archives.push({ ...noteTobeRestored });
+    } else {
+      user.notes.push({ ...noteTobeRestored });
+    }
+    user.trash = user.trash.filter((note) => note._id !== noteId);
+    this.db.users.update({ _id: user._id }, user);
+    return new Response(
+      201,
+      {},
+      { notes: user.notes, trash: user.trash, archives: user.archives }
+    );
+  } catch (error) {
+    return new Response(
+      500,
       {},
       {
-        errors: ["The email you entered is not Registered. Not Found error"],
+        error,
       }
     );
   }
-  const { noteId } = request.params;
-  const restoredNote = user.trash.filter((note) => note._id === noteId)[0];
-  user.trash = user.trash.filter((note) => note._id !== noteId);
-  user.notes.push({ ...restoredNote });
-  this.db.users.update({ _id: user._id }, user);
-  return new Response(200, {}, { trash: user.trash, notes: user.notes });
 };

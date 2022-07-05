@@ -3,7 +3,7 @@
   width: 100vw;
   height: 100vh;
   background-color: rgba(26, 26, 26, 0.662);
-  z-index: 20;
+  z-index: 3;
 
   .note-card {
     position: absolute;
@@ -108,6 +108,39 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .edit-note-backdrop {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(26, 26, 26, 0.662);
+    z-index: 3;
+
+    .note-card {
+      width: 80%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      .note-controls-options {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        .controls {
+          display: flex;
+          gap: 1rem;
+        }
+        .options {
+          margin-top: 1rem;
+          display: flex;
+        }
+      }
     }
   }
 }

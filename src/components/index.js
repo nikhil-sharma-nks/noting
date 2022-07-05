@@ -7,3 +7,4 @@ export { NotesContainer } from './Notes/NotesContainer/NotesContainer';
 export { NoteCard } from './Notes/NoteCard/NoteCard';
 export { NoteCardView } from './Notes/NoteCardView/NoteCardView';
 export { EditNote } from './Notes/EditNote/EditNote';
+export { FilterSearch } from './FilterSearch/FilterSearch';

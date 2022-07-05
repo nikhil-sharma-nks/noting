@@ -41,6 +41,61 @@ const NoteReducer = (state, action) => {
         editorNote: {},
       };
     }
+    case 'LOAD_LABELS': {
+      return {
+        ...state,
+        labels: [...new Set(payload)],
+      };
+    }
+    case 'ADD_NEW_LABEL': {
+      return {
+        ...state,
+        labels: [...new Set([...state.labels, payload])],
+      };
+    }
+    case 'SEARCH_QUERY': {
+      return {
+        ...state,
+        searchQuery: payload,
+      };
+    }
+    case 'FILTER_DATE': {
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          sortBy: payload,
+        },
+      };
+    }
+    case 'FILTER_PRIORITY': {
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          filterPriority: payload,
+        },
+      };
+    }
+    case 'FILTER_TAGS': {
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          filterTags: payload,
+        },
+      };
+    }
+    case 'CLEAR_FILTER': {
+      return {
+        ...state,
+        filter: {
+          sortBy: '',
+          filterTags: [],
+          filterPriority: '',
+        },
+      };
+    }
     case 'LOGOUT': {
       return {
         notes: [],
@@ -50,6 +105,12 @@ const NoteReducer = (state, action) => {
         isEditorModalOpen: false,
         isNewNoteOpen: true,
         editorNote: {},
+        labels: [],
+        filter: {
+          sortBy: '',
+          filterTags: [],
+          filterPriority: '',
+        },
       };
     }
     default:
