@@ -142,23 +142,27 @@ const NoteCard = ({ fromEdit }) => {
     setLoading(true);
     try {
       if (fromArchive) {
-        const archives = await deleteArchive(editorNote._id);
+        const data = await deleteArchive(editorNote._id);
+        const { trash, archives } = data;
         if (archives) {
-          makeToast(`Archive Note Deleted Successfully`, 'success');
+          makeToast(`Archive Note Moved To Trash`, 'success');
           noteDispatch({ type: 'LOAD_ARCHIVE', payload: archives });
+          noteDispatch({ type: 'LOAD_TRASH', payload: trash });
           handleCancel();
         } else {
           makeToast('Failed To Delete Archive Note', 'error');
         }
         return;
       }
-      const notes = await deleteNote(editorNote._id);
+      const data = await deleteNote(editorNote._id);
+      const { trash, notes } = data;
       if (notes) {
-        makeToast(`Note Deleted Successfully`, 'success');
+        makeToast(`Note Moved To Trash`, 'success');
         noteDispatch({ type: 'LOAD_NOTES', payload: notes });
+        noteDispatch({ type: 'LOAD_TRASH', payload: trash });
         handleCancel();
       } else {
-        makeToast('Failed To Delete Note', 'error');
+        makeToast('Failed In Moving To Trash', 'error');
       }
       return;
     } catch (err) {

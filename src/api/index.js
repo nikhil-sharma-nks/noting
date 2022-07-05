@@ -7,3 +7,9 @@ export {
   deleteArchive,
   updateArchiveNote,
 } from './NoteService/archive';
+export {
+  getAllTrash,
+  addToTrash,
+  restoreFromTrash,
+  deleteFromTrash,
+} from './NoteService/trash';
