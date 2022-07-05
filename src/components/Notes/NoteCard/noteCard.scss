@@ -130,3 +130,68 @@
     }
   }
 }
+
+@media (max-width: 700px) {
+  .note-card {
+    width: 80%;
+    .note-controls-options {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      .controls {
+        display: flex;
+        gap: 1rem;
+      }
+      .options {
+        margin-top: 1rem;
+        display: flex;
+      }
+    }
+    .color-pallete-editor {
+      padding: 10px;
+      display: flex;
+      gap: 10px;
+      align-self: flex-end;
+      background-color: var(--body-background-color);
+      .color-element {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+    }
+    .label-editor-note {
+      padding: 1rem;
+      .new-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        #create-new-label {
+          padding: 5px 10px;
+          outline: none;
+          border: none;
+          width: 70%;
+        }
+        .btn-floating {
+          i {
+            margin-top: 2px;
+          }
+          padding: 3px;
+        }
+      }
+      .label-container {
+        display: flex;
+        flex-wrap: wrap;
+        .input-container {
+          margin: 10px 0;
+          width: 50%;
+        }
+      }
+    }
+  }
+}

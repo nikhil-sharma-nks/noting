@@ -15,6 +15,11 @@ const NoteProvider = ({ children }) => {
     isNewNoteOpen: true,
     editorNote: {},
     labels: [],
+    filter: {
+      sortBy: '',
+      filterTags: [],
+      filterPriority: '',
+    },
   });
   return (
     <NoteContext.Provider value={{ noteState, noteDispatch }}>

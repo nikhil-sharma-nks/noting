@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import './home.scss';
+import './trash.scss';
 import {
   Layout,
   NoteCardView,
-  EditNote,
   NotesContainer,
+  EditNote,
   NoteCard,
 } from '../../components';
 import { useNote } from '../../context';
@@ -15,7 +15,7 @@ import {
   filterByTags,
 } from '../../utils';
 
-const Home = () => {
+const Trash = () => {
   const { noteState, noteDispatch } = useNote();
   const {
     isEditorModalOpen,
@@ -24,17 +24,11 @@ const Home = () => {
     notes,
     labels,
     searchQuery,
+    trash,
   } = noteState;
-  const [notesToDisplay, setNotesToDisplay] = useState(notes || []);
-
+  const [notesToDisplay, setNotesToDisplay] = useState(trash || []);
   useEffect(() => {
-    if (!noteState.isNewNoteOpen) {
-      noteDispatch({ type: 'OPEN_NEW_NOTE' });
-    }
-  }, []);
-
-  useEffect(() => {
-    const notesFilterBySearch = filterBySearch(searchQuery, notes);
+    const notesFilterBySearch = filterBySearch(searchQuery, trash);
     const notesSortByDate = sortByDate(
       filter.sortBy?.value || '',
       notesFilterBySearch
@@ -48,18 +42,17 @@ const Home = () => {
       notesSortByPriority
     );
     setNotesToDisplay([...notesFilterByTags]);
-  }, [filter, notes, labels, searchQuery]);
+  }, [filter, trash, labels, searchQuery]);
+
   return (
     <>
       <Layout>
-        {isEditorModalOpen && <EditNote />}
         <NotesContainer>
-          {isNewNoteOpen && <NoteCard />}
           {notesToDisplay?.map((note) => (
-            <NoteCardView key={note._id} note={note} />
+            <NoteCardView key={note._id} note={note} fromTrash />
           ))}
-          {notesToDisplay.length === 0 && (
-            <p className='text-centered text-xl mt-4'>No Notes Found</p>
+          {noteState.trash.length === 0 && (
+            <p className='text-centered text-xl mt-4'>Nothing In Trash</p>
           )}
         </NotesContainer>
       </Layout>
@@ -67,4 +60,4 @@ const Home = () => {
   );
 };
 
-export { Home };
+export { Trash };

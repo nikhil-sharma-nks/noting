@@ -73,15 +73,12 @@ const deleteNote = async (noteId) => {
   const token = localStorage.getItem('token');
   const deleteNoteBaseUrl = `/api/notes/${noteId}`;
   try {
-    const {
-      data: { notes },
-      status,
-    } = await axios.delete(deleteNoteBaseUrl, {
+    const { data, status } = await axios.delete(deleteNoteBaseUrl, {
       headers: {
         authorization: token,
       },
     });
-    if (status >= 200 && status <= 300) return notes;
+    if (status >= 200 && status <= 300) return data;
     else {
       throw new Error("Couldn't delete note");
     }
