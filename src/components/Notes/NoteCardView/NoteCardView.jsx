@@ -254,17 +254,6 @@ const NoteCardView = ({ note, fromArchive, fromTrash }) => {
                       className='fa-solid fa-tag mr-3 icon-button'
                       onClick={toggleLabel}
                     ></i>
-                    {/* {!fromArchive ? (
-                      <i
-                        className='fa-solid fa-box-archive mr-3 icon-button'
-                        onClick={handleArchive}
-                      ></i>
-                    ) : (
-                      <i
-                        class='fa-solid fa-arrow-right-to-bracket mr-3 icon-button'
-                        onClick={handleRestore}
-                      ></i>
-                    )} */}
                   </>
                 )}
                 {!fromArchive && !fromTrash ? (
@@ -274,7 +263,7 @@ const NoteCardView = ({ note, fromArchive, fromTrash }) => {
                   ></i>
                 ) : (
                   <i
-                    class='fa-solid fa-arrow-right-to-bracket mr-3 icon-button'
+                    className='fa-solid fa-arrow-right-to-bracket mr-3 icon-button'
                     onClick={handleRestore}
                   ></i>
                 )}
@@ -339,10 +328,10 @@ const NoteCardView = ({ note, fromArchive, fromTrash }) => {
               onChange={(e) => setLabelInput(e.target.value)}
             />
             <button
-              class='btn btn-primary-outlined btn-floating ml-2'
+              className='btn btn-primary-outlined btn-floating ml-2'
               onClick={handleNewLabel}
             >
-              <i class='fa-solid fa-plus'></i>
+              <i className='fa-solid fa-plus'></i>
             </button>
           </div>
           <div className='label-container'>

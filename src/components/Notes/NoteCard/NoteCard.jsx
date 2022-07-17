@@ -403,7 +403,7 @@ const NoteCard = ({ fromEdit }) => {
                 </div>
                 <div className='label-container'>
                   {noteState.labels?.map((label) => (
-                    <div className='input-container' index={label}>
+                    <div className='input-container' key={label}>
                       <input
                         type='checkbox'
                         name={label}
