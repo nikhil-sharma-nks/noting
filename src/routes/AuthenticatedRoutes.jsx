@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useLocation, Outlet, Navigate } from 'react-router-dom';
 import { makeToast } from '../components';
 

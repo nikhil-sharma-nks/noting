@@ -36,11 +36,11 @@ const NoteCard = ({ fromEdit }) => {
   }, [location]);
 
   const colorCode = [
-    '#FF5959',
+    '#F29191',
     '#3AB0FF',
     '#14C38E',
-    '#D4D925',
-    '#EA5C2B',
+    '#E2C275',
+    '#FF7F3F',
     '#A2416B',
   ];
 

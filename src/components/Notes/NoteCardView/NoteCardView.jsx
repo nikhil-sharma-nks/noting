@@ -9,7 +9,6 @@ import {
   restoreArchiveNote,
   updateArchiveNote,
   deleteArchive,
-  addToTrash,
   deleteFromTrash,
   restoreFromTrash,
 } from '../../../api';
@@ -25,11 +24,11 @@ const NoteCardView = ({ note, fromArchive, fromTrash }) => {
   const [labelInput, setLabelInput] = useState('');
   const [updatedNoteTags, setUpdatedNoteTags] = useState(tags || []);
   const colorCode = [
-    '#FF5959',
+    '#F29191',
     '#3AB0FF',
     '#14C38E',
-    '#D4D925',
-    '#EA5C2B',
+    '#E2C275',
+    '#FF7F3F',
     '#A2416B',
   ];
 

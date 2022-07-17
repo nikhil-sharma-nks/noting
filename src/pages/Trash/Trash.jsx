@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './trash.scss';
-import {
-  Layout,
-  NoteCardView,
-  NotesContainer,
-  EditNote,
-  NoteCard,
-} from '../../components';
+import { Layout, NoteCardView, NotesContainer } from '../../components';
 import { useNote } from '../../context';
 import {
   filterBySearch,
@@ -16,16 +10,8 @@ import {
 } from '../../utils';
 
 const Trash = () => {
-  const { noteState, noteDispatch } = useNote();
-  const {
-    isEditorModalOpen,
-    isNewNoteOpen,
-    filter,
-    notes,
-    labels,
-    searchQuery,
-    trash,
-  } = noteState;
+  const { noteState } = useNote();
+  const { filter, labels, searchQuery, trash } = noteState;
   const [notesToDisplay, setNotesToDisplay] = useState(trash || []);
   useEffect(() => {
     const notesFilterBySearch = filterBySearch(searchQuery, trash);

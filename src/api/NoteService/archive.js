@@ -37,7 +37,7 @@ const addToArchive = async (noteId, note) => {
     );
     if (status >= 200 && status <= 300) return data;
     else {
-      throw new Error('Could not get archives');
+      throw new Error('Could not add to archives');
     }
   } catch (err) {
     console.log(err.message);
@@ -59,7 +59,7 @@ const restoreArchiveNote = async (noteId, note) => {
     );
     if (status >= 200 && status <= 300) return data;
     else {
-      throw new Error('Could not get archives');
+      throw new Error('Could not restore archives');
     }
   } catch (err) {
     console.log(err.message);
@@ -77,7 +77,7 @@ const deleteArchive = async (noteId) => {
     });
     if (status >= 200 && status <= 300) return data;
     else {
-      throw new Error('Could not get archives');
+      throw new Error('Could not delete archives');
     }
   } catch (err) {
     console.log(err.message);
@@ -99,7 +99,7 @@ const updateArchiveNote = async (noteId, archiveNote) => {
     );
     if (status >= 200 && status <= 300) return data;
     else {
-      throw new Error('Could not get archives');
+      throw new Error('Could not update archives');
     }
   } catch (err) {
     console.log(err.message);

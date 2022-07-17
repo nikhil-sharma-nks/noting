@@ -25,7 +25,6 @@ const Navbar = () => {
     noteDispatch({ type: 'LOGOUT' });
     navigate('/');
   };
-  const openNewNote = () => noteDispatch({ type: 'OPEN_NEW_NOTE' });
 
   const sidebarLinks = [
     {
