@@ -12,11 +12,6 @@ const Sidebar = () => {
       link: '/home',
       icon: <i className='fa-solid fa-house mr-3'></i>,
     },
-    // {
-    //   name: 'Labels',
-    //   link: '/home',
-    //   icon: <i className='fa-solid fa-tag mr-3'></i>,
-    // },
     {
       name: 'Archive',
       link: '/archive',
@@ -29,7 +24,7 @@ const Sidebar = () => {
     },
     {
       name: 'Profile',
-      link: '/',
+      link: '/profile',
       icon: <i className='fa-solid fa-user mr-3'></i>,
     },
   ];

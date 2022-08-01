@@ -21,7 +21,6 @@ const Archive = () => {
     isEditorModalOpen,
     isNewNoteOpen,
     filter,
-    notes,
     labels,
     searchQuery,
     archives,

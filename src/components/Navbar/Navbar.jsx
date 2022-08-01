@@ -112,6 +112,19 @@ const Navbar = () => {
                 </NavLink>
               </li>
             ))}
+            {authState.isAuth && (
+              <li>
+                <NavLink
+                  to='/profile'
+                  className={({ isActive }) =>
+                    isActive ? 'link-item link-isActive' : 'link-item'
+                  }
+                >
+                  <i className='fa-solid fa-user mr-3'></i>
+                  Profile
+                </NavLink>
+              </li>
+            )}
             <li className='link-item' onClick={handleAuth}>
               <i className='fa-solid fa-arrow-right-from-bracket mr-3'></i>
               {authState.isAuth ? 'Logout' : 'Login'}

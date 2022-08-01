@@ -1,6 +1,14 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { LandingPage, Login, Signup, Home, Archive, Trash } from '../pages';
+import {
+  LandingPage,
+  Login,
+  Signup,
+  Home,
+  Archive,
+  Trash,
+  Profile,
+} from '../pages';
 import AuthenticatedRoutes from './AuthenticatedRoutes';
 
 import Mockman from 'mockman-js';
@@ -18,6 +26,7 @@ const RoutesContainer = () => {
         <Route path='/home' element={<Home />} />
         <Route path='/archive' element={<Archive />} />
         <Route path='/trash' element={<Trash />} />
+        <Route path='/profile' element={<Profile />} />
       </Route>
     </Routes>
   );
