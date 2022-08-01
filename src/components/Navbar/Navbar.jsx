@@ -83,7 +83,7 @@ const Navbar = () => {
                   authState.user.lastName.charAt(0).toUpperCase()}
               </div>
               <div className='dropdown-content'>
-                <div>Profile</div>
+                <div onClick={() => navigate('/profile')}>Profile</div>
                 <div onClick={handleLogout}>Logout</div>
               </div>
             </div>
