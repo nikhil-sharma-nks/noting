@@ -8,6 +8,7 @@ import {
   Archive,
   Trash,
   Profile,
+  ErrorPage,
 } from '../pages';
 import AuthenticatedRoutes from './AuthenticatedRoutes';
 
@@ -28,6 +29,7 @@ const RoutesContainer = () => {
         <Route path='/trash' element={<Trash />} />
         <Route path='/profile' element={<Profile />} />
       </Route>
+      <Route path='*' element={<ErrorPage />} />
     </Routes>
   );
 };
