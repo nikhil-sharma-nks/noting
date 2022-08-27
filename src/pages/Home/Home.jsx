@@ -6,6 +6,8 @@ import {
   EditNote,
   NotesContainer,
   NoteCard,
+  Error,
+  makeToast,
 } from '../../components';
 import { useNote } from '../../context';
 import {
@@ -59,7 +61,35 @@ const Home = () => {
             <NoteCardView key={note._id} note={note} />
           ))}
           {notesToDisplay.length === 0 && (
-            <p className='text-centered text-xl mt-4'>No Notes Found</p>
+            <Error>
+              {!searchQuery ? (
+                <>
+                  <p className='text-xl'>No Notes Available</p>
+                  <p className='text-m'>
+                    Notes that you have added would appear here. Add Now.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className='text-xl'>No Notes Found On Search</p>
+                  <div>
+                    <button
+                      className='btn btn-primary'
+                      onClick={() => {
+                        noteDispatch({
+                          type: 'SEARCH_QUERY',
+                          payload: '',
+                        });
+                        noteDispatch({ type: 'CLEAR_FILTER' });
+                        makeToast('Search And Filter Cleared', 'success');
+                      }}
+                    >
+                      Clear Search And Filters
+                    </button>
+                  </div>
+                </>
+              )}
+            </Error>
           )}
         </NotesContainer>
       </Layout>

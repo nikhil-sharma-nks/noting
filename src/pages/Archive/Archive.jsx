@@ -6,6 +6,8 @@ import {
   NotesContainer,
   EditNote,
   NoteCard,
+  Error,
+  makeToast,
 } from '../../components';
 import { useNote } from '../../context';
 import {
@@ -21,7 +23,6 @@ const Archive = () => {
     isEditorModalOpen,
     isNewNoteOpen,
     filter,
-    notes,
     labels,
     searchQuery,
     archives,
@@ -58,8 +59,37 @@ const Archive = () => {
           {notesToDisplay?.map((note) => (
             <NoteCardView key={note._id} note={note} fromArchive />
           ))}
-          {noteState.archives.length === 0 && (
-            <p className='text-centered text-xl mt-4'>No Archive Notes</p>
+          {notesToDisplay.length === 0 && (
+            <Error>
+              {!searchQuery ? (
+                <>
+                  <p className='text-xl'>No Archived Notes Available</p>
+                  <p className='text-m'>
+                    Notes that you have Archived added would appear here. Add
+                    Now.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className='text-xl'>No Notes Found On Search</p>
+                  <div>
+                    <button
+                      className='btn btn-primary'
+                      onClick={() => {
+                        noteDispatch({
+                          type: 'SEARCH_QUERY',
+                          payload: '',
+                        });
+                        noteDispatch({ type: 'CLEAR_FILTER' });
+                        makeToast('Search And Filter Cleared', 'success');
+                      }}
+                    >
+                      Clear Search And Filters
+                    </button>
+                  </div>
+                </>
+              )}
+            </Error>
           )}
         </NotesContainer>
       </Layout>

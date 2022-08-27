@@ -76,3 +76,12 @@
 .color-warning {
   color: var(--warning);
 }
+
+.theme-background {
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+.theme-body-background {
+  color: var(--text-color);
+  background-color: var(--body-background-color);
+}

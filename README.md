@@ -28,6 +28,7 @@ Noting, A modern note taking app fot your quick note taking needs.
   - Logout
 - Mobile Responsiveness
 - Dark/Light Mode
+- Profile Page
 
 ## Screens
 |   |  |

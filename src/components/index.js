@@ -8,3 +8,4 @@ export { NoteCard } from './Notes/NoteCard/NoteCard';
 export { NoteCardView } from './Notes/NoteCardView/NoteCardView';
 export { EditNote } from './Notes/EditNote/EditNote';
 export { FilterSearch } from './FilterSearch/FilterSearch';
+export { Error } from './Error/Error';

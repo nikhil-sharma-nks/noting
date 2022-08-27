@@ -1,22 +1,24 @@
 import React from 'react';
 import './sidebar.scss';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useNote } from '../../context';
 
 const Sidebar = () => {
   const { noteDispatch } = useNote();
-  const openNewNote = () => noteDispatch({ type: 'OPEN_NEW_NOTE' });
+  const navigate = useNavigate();
+  const location = useLocation();
+  const openNewNote = () => {
+    if (!location.pathname.includes('/home')) {
+      navigate('/home');
+    }
+    noteDispatch({ type: 'OPEN_NEW_NOTE' });
+  };
   const sidebarLinks = [
     {
       name: 'Home',
       link: '/home',
       icon: <i className='fa-solid fa-house mr-3'></i>,
     },
-    // {
-    //   name: 'Labels',
-    //   link: '/home',
-    //   icon: <i className='fa-solid fa-tag mr-3'></i>,
-    // },
     {
       name: 'Archive',
       link: '/archive',
@@ -29,7 +31,7 @@ const Sidebar = () => {
     },
     {
       name: 'Profile',
-      link: '/',
+      link: '/profile',
       icon: <i className='fa-solid fa-user mr-3'></i>,
     },
   ];
