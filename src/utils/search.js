@@ -1,8 +1,9 @@
 const filterBySearch = (searchQuery, notes) => {
-  if (searchQuery === '') return notes;
+  if (searchQuery.trim() === '') return notes;
   return notes.filter(
     (note) =>
-      note.title.includes(searchQuery) || note.textContent.includes(searchQuery)
+      note.title.includes(searchQuery.trim()) ||
+      note.textContent.includes(searchQuery.trim())
   );
 };
 
