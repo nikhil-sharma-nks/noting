@@ -77,9 +77,9 @@ const NoteCard = ({ fromEdit }) => {
     event.preventDefault();
     var current = new Date();
     const note = {
-      title: title,
+      title: title.trim(),
       content: content,
-      textContent: textContent,
+      textContent: textContent.trim(),
       color: selectedColor,
       priority: priority,
       createdAt: current.toLocaleString(),
@@ -93,6 +93,7 @@ const NoteCard = ({ fromEdit }) => {
           noteDispatch({ type: 'LOAD_NOTES', payload: notes });
           handleCancel();
         } else {
+          showErrorMessage();
           makeToast('Failed To Edit Note', 'error');
         }
         return;
@@ -107,6 +108,7 @@ const NoteCard = ({ fromEdit }) => {
           handleCancel();
         } else {
           makeToast('Failed To Add To Archive Note', 'error');
+          showErrorMessage();
         }
         return;
       }
@@ -117,6 +119,7 @@ const NoteCard = ({ fromEdit }) => {
         resetEditor();
       } else {
         makeToast('Failed To Add To Note', 'error');
+        showErrorMessage();
       }
     } catch (err) {
       console.log(err.message);
@@ -151,6 +154,7 @@ const NoteCard = ({ fromEdit }) => {
           handleCancel();
         } else {
           makeToast('Failed To Delete Archive Note', 'error');
+          showErrorMessage();
         }
         return;
       }
@@ -163,6 +167,7 @@ const NoteCard = ({ fromEdit }) => {
         handleCancel();
       } else {
         makeToast('Failed In Moving To Trash', 'error');
+        showErrorMessage();
       }
       return;
     } catch (err) {
@@ -181,14 +186,15 @@ const NoteCard = ({ fromEdit }) => {
         noteDispatch({ type: 'LOAD_NOTES', payload: notes });
       } else {
         makeToast('Failed To Delete Note', 'error');
+        showErrorMessage();
       }
       if (archives) {
         makeToast(`Note Archived Successfully`, 'success');
         noteDispatch({ type: 'LOAD_ARCHIVE', payload: archives });
       } else {
         makeToast('Failed To Add To Archive Note', 'error');
+        showErrorMessage();
       }
-      return;
     } catch (err) {
       console.log(err.message);
     } finally {
@@ -206,12 +212,14 @@ const NoteCard = ({ fromEdit }) => {
         noteDispatch({ type: 'LOAD_NOTES', payload: notes });
       } else {
         makeToast('Failed To Restore Note', 'error');
+        showErrorMessage();
       }
       if (archives) {
         makeToast(`Note Unarchived Successfully`, 'success');
         noteDispatch({ type: 'LOAD_ARCHIVE', payload: archives });
       } else {
         makeToast('Failed To Move From Archive Note', 'error');
+        showErrorMessage();
       }
       return;
     } catch (err) {
@@ -235,17 +243,24 @@ const NoteCard = ({ fromEdit }) => {
   };
 
   const handleNewLabel = () => {
-    if (labelInput === '') {
+    if (labelInput.trim() === '') {
       makeToast("Label Name Can't Be Empty", 'info');
       return;
     }
-    if (noteState.labels.includes(labelInput)) {
+    if (noteState.labels.includes(labelInput.trim())) {
       makeToast(`${labelInput} Already Exisits`, 'error');
       return;
     }
-    noteDispatch({ type: 'ADD_NEW_LABEL', payload: labelInput });
+    noteDispatch({ type: 'ADD_NEW_LABEL', payload: labelInput.trim() });
     setLabelInput('');
     makeToast('New Label Added', 'success');
+  };
+
+  const showErrorMessage = () => {
+    makeToast(`Action Failed, See Log For It's Reason`, 'error');
+    console.log(
+      "This function was failed because, you might have refreshed the page somewhere, since this is a frontend application which doesn't have the real backend, it uses mock backend mockbee and mirajeJs which on reloading serves entire mock backend again instead of persisting. So you might want to logout, reload and log in again with test credentials or signup again and use the features of this app without reloading"
+    );
   };
 
   return (
