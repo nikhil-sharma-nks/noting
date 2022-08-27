@@ -22,6 +22,7 @@ const Login = () => {
   useEffect(() => {
     const isAuth = JSON.parse(localStorage.getItem('isAuth'));
     if (isAuth) {
+      makeToast('You Are Already Logged In', 'success');
       navigate('/home');
     }
   }, []);
@@ -110,23 +111,6 @@ const Login = () => {
                   onChange={handleChange}
                   value={loginInput.password}
                 />
-
-                <div className='form-options-container mt-4'>
-                  <div>
-                    <input
-                      type='checkbox'
-                      id='rememberMe'
-                      name='rememberMe'
-                      value='newsletter'
-                    />
-                    <label className='ml-1' htmlFor='rememberMe'>
-                      Remember Me
-                    </label>
-                  </div>
-                  <div>
-                    <div>Forget Password</div>
-                  </div>
-                </div>
                 <button className='btn btn-primary mt-3' type='submit'>
                   Login
                 </button>
