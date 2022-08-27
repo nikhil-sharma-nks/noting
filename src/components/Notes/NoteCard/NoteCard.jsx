@@ -21,7 +21,6 @@ const NoteCard = ({ fromEdit }) => {
   const [content, setContent] = useState(editorNote.content || '');
   const [textContent, setTextContent] = useState(editorNote.textContent || '');
   const [title, setTitle] = useState(editorNote.title || '');
-
   const [showColoPalette, setShowColorPalette] = useState(false);
   const [selectedColor, setSelectedColor] = useState(editorNote.color || '');
   const [priority, setPriority] = useState(editorNote.priority || '');
@@ -282,8 +281,7 @@ const NoteCard = ({ fromEdit }) => {
             </div>
             <div className='text-body-container p-3'>
               <Editor
-                apiKey='ycwkesug7hp0pxny33cc65ytjz7wq7veeqeltjx2yzf8ucw3'
-                // apiKey={process.env.TINY_MCE_KEY}
+                apiKey={process.env.REACT_APP_TINY_MCE_KEY}
                 value={content}
                 init={{
                   height: 200,
